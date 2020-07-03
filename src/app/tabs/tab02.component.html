@@ -1,0 +1,71 @@
+<mat-card>
+  <mat-card-subtitle>
+    <mat-toolbar>
+      <mat-card-actions>
+        <button mat-flat-button color="accent" (click)="addHist()">登録</button>
+        <button mat-flat-button color="warn" (click)="cancel()">キャンセル</button>
+      </mat-card-actions>
+    </mat-toolbar>
+  </mat-card-subtitle>
+    <form fxLayout="row wrap" fxLayoutGap="20px">
+      <mat-form-field>
+        <input #azuEL matInput numberInput placeholder="預かり額" [(ngModel)]="cntservice.cnthead.azu" name="elAzu" class="i_num">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput style="font-weight:bold" readonly="readonly" placeholder="合計額(うち消費税)" value="{{cntservice.cnthead.sum | number}}({{cntservice.cnthead.zei | number}})" class="i_num">
+      </mat-form-field>
+      <mat-form-field>
+        <!-- <input matInput type="number" readonly="readonly" placeholder="お釣り" [(ngModel)]="azu - listservice.sum"> -->
+        <input matInput readonly="readonly" placeholder="お釣り" value="{{cntservice.cnthead.azu - cntservice.cnthead.sum | number}}" class="i_num">
+      </mat-form-field>
+      <mat-form-field style="width:4em">
+        <input #ratEL matInput percentInput placeholder="消費税率" (change)="calc()" [(ngModel)]="cntservice.cnthead.rat" name="elRat" class="i_num">
+      </mat-form-field>
+    </form>
+    <form fxLayout="row wrap" fxLayoutGap="20px">
+      <mat-form-field style="width:4em">
+        <input matInput percentInput placeholder="値引率" [(ngModel)]="cntservice.cnthead.neb" name="elNeb" class="i_num">
+      </mat-form-field>
+      <button mat-flat-button (click)="disCount(cntservice.cnthead.neb)" color="warn">値引計算</button>
+      <mat-form-field style="width:5em">
+        <mat-select placeholder="支払方法" [(value)]="cntservice.cnthead.payt" required>
+          <mat-option value ="2">現金</mat-option>
+          <mat-option value ="7">カード</mat-option>
+          <mat-option value ="1">掛</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="顧客コード" [(value)]="cntservice.cnthead.cus" (selectionChange)="setKbn($event)" required>
+          <mat-option *ngFor="let sval of custservice.getSval()" [value]="sval.value">
+            {{sval.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width:5em">
+        <input matInput readonly="readonly" placeholder="単価区分" value="{{cntservice.cnthead.tkbn | tankaKbn}}">
+      </mat-form-field>
+      <mat-form-field style="width:3em">
+        <input matInput readonly="readonly" placeholder="税区分" value="{{cntservice.cnthead.zkbn | zeiKbn}}">
+      </mat-form-field>
+    </form>
+    <form fxLayout="row wrap">
+    <mat-form-field style="width: 100%">
+      <textarea matInput placeholder="備考・メモ" [(ngModel)]="cntservice.cnthead.mem" name="elMem"></textarea>
+    </mat-form-field>
+    </form>
+  <app-counttbl></app-counttbl>
+  <mat-accordion>
+    <ng-container *ngFor="let good of goodsservice.getGoods()">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          {{good.categ}}
+        </mat-expansion-panel-header>
+        <div fxLayoutGap="10px"> 
+          <ng-container *ngFor="let ginfo of good.ginfo; let i = index">
+              <button mat-raised-button color="primary" (click)="addList(ginfo.gcode,ginfo.gname,ginfo.price,good.categ,i)" matBadge="{{ginfo.stock}}" matBadgeColor="accent">{{ginfo.gcode}}</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </ng-container>
+  </mat-accordion>
+</mat-card>

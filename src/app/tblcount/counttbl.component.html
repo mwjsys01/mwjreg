@@ -1,0 +1,51 @@
+<div class="mat-elevation-z8">    
+  <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Elements">
+    <ng-container matColumnDef="gds">
+      <th mat-header-cell *matHeaderCellDef>Gcode</th>
+      <td mat-cell *matCellDef="let row">{{row.gds}}</td>
+    </ng-container>
+    <ng-container matColumnDef="gnm">
+      <th mat-header-cell *matHeaderCellDef>Gname</th>
+      <td mat-cell *matCellDef="let row">{{row.gnm}}</td>
+    </ng-container>
+    <ng-container matColumnDef="prc">
+      <th mat-header-cell *matHeaderCellDef class="i_num">Price</th>
+      <!-- <td mat-cell *matCellDef="let row; let i = index" contentEditable="true" [textContent]="row.prc[0]" (input)="row.prc[0] = $event.target.textContent" (blur)="updateList(i, 'prc[0]', $event)" class="td_num"></td> -->
+      <td mat-cell *matCellDef="let row; let i = index" class="i_num">
+        <mat-form-field>
+          <input matInput numberInput [(ngModel)]="row.prc[0]" (blur)="updateList(i, 'prc[0]', row.prc[0])" class="i_num">
+        </mat-form-field> 
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="cnt">
+      <th mat-header-cell *matHeaderCellDef class="i_num">Count</th>
+      <!-- <td mat-cell *matCellDef="let row; let i = index" contentEditable="true" [textContent]="row.cnt" (input)="row.cnt = $event.target.textContent" (blur)="updateList(i, 'cnt', $event)" class="td_num"></td> -->
+      <td mat-cell *matCellDef="let row; let i = index" class="i_num">
+        <mat-form-field>
+          <input matInput numberInput [(ngModel)]="row.cnt" (focus)="setPrev(i, row.cnt)" (blur)="updateList(i, 'cnt', row.cnt)" class="i_num">
+        </mat-form-field> 
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="sum">
+      <th mat-header-cell *matHeaderCellDef class="i_num">Sum</th>
+      <td mat-cell *matCellDef="let row" class="i_num">{{row.prc[0]*row.cnt | number}}</td>
+    </ng-container>
+    <ng-container matColumnDef="actionsColumn">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let row; let i = index" class="i_num">
+        <button mat-raised-button color="warn" focusable="false" (click)="deleteRow(i)">
+          <mat-icon>delete_forever</mat-icon>Del
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- <mat-paginator #paginators
+      [length]="dataSource?.data.length"
+      [pageIndex]="0"
+      [pageSize]="50"
+      [pageSizeOptions]="[25, 50, 100, 250]">
+  </mat-paginator> -->
+</div>
