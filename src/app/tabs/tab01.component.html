@@ -17,14 +17,14 @@
     <mat-card-subtitle>
       <div fxLayout="column"> 
         <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chNEW">新規</mat-checkbox>
-        <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chEDIT">続き/大会追加</mat-checkbox>
-        <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chCMPL">通販Pro読込済</mat-checkbox>
+        <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chEDIT">編集中(大会追加)</mat-checkbox>
+        <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chCMPL">CSV出力済</mat-checkbox>
       </div>
     </mat-card-subtitle>
     <mat-card-content>
       <mat-select [placeholder]="hedsrv.placehold" [(value)]="hedsrv.headid" (selectionChange)="selected()">
         <ng-container *ngFor="let hd of hedsrv.headers">
-          <mat-option value="{{ hd.headid }}">{{ hd.name }} ステータス:{{ hd.status }} 登録日時：{{ hd.created_at | date:"yy/MM/dd HH:mm" }}</mat-option>
+          <mat-option value="{{ hd.headid }}">{{ hd.name }} (ステータス:{{ hd.status | hdStatus }}) 登録日時：{{ hd.created_at | date:"yy/MM/dd HH:mm" }}</mat-option>
         </ng-container>
       </mat-select>
     </mat-card-content>

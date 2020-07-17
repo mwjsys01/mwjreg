@@ -57,7 +57,20 @@ export class Tab02Component implements OnInit,AfterViewChecked {
     // this.goodsservice.subject.next();
   }
   addHist():void {
-    // 登録ボタン
+  // 登録ボタン
+    // ヘッダステータス変更
+    this.apollo.mutate<any>({
+      mutation: Query.UpdateStatus,
+      variables: { 
+        headid: this.headservice.headid ,
+        timest: new Date(),
+        status: 'EDIT'
+        },
+      }).subscribe(({ data }) => {
+          // console.log('got data', data);
+      },(error) => {
+          console.log('there was an error sending the query', error);
+      });       
     const hist:Hist = {
         checked:false,
         index:this.histservice.getIndex(),

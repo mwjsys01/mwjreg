@@ -29,25 +29,13 @@ export class Tab01Component implements OnInit {
     this.qry_Tankakbn();
     // this.hedsrv.observe.subscribe();
   }
-  // 読込ボタン
+  // select選択時読込処理
   read_Data(value:number):void {
     // サービス初期化 
     this.goodsservice.resetGoods();
     this.hisservice.reset_Hists();
     this.hedsrv.loaded=false;
-    // this.cntservice.reset();
-    // ヘッダステータス変更
-    this.apollo.mutate<any>({
-      mutation: Query.UpdateStatus,
-      variables: { 
-        headid: this.hedsrv.headid ,
-        now : new Date()
-        },
-       }).subscribe(({ data }) => {
-          // console.log('got data', data);
-       },(error) => {
-          console.log('there was an error sending the query', error);
-       });
+    // this.cntservice.reset(); 
     // tblcustomをcustomerserviceへ読込
     let adCus: Cust;
     let adSel: SelVal;   

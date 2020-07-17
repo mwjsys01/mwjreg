@@ -40,6 +40,7 @@ import { NumberInputDirective } from './drctvs/number-input.directive';
 import { CounttblComponent } from './tblcount/counttbl.component';
 import { HistorytblComponent } from './tblhist/historytbl.component';
 import { PayTypePipe } from './pipes/pay-type.pipe';
+import { HdStatusPipe } from './pipes/hd-status.pipe';
 registerLocaleData(localeJa);
 
 @NgModule({
@@ -58,7 +59,8 @@ registerLocaleData(localeJa);
     NumberInputDirective,
     CounttblComponent,
     HistorytblComponent,
-    PayTypePipe
+    PayTypePipe,
+    HdStatusPipe
   ],
   imports: [
     BrowserModule,

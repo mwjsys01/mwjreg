@@ -14,9 +14,9 @@ query get_head($status: [String!],$type: String!) {
   }
 }`;
 export const UpdateStatus = gql`
-mutation update_status($headid: Int!,$now: timestamptz!) {
+mutation update_status($headid: Int!,$timest: timestamptz!,$status: String!) {
   update_tmpshop_tblheader(where: {headid: {_eq: $headid}},
-                   _set: {status: "EDIT", updated_at: $now}) {
+                   _set: {status: $status, updated_at: $timest}) {
     affected_rows
   }
 }`;

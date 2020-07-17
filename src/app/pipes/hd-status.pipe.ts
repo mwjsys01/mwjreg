@@ -1,23 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'payType'
+  name: 'hdStatus'
 })
-export class PayTypePipe implements PipeTransform {
+export class HdStatusPipe implements PipeTransform {
 
   transform(value: string): string {
     let name: string;
     switch (value) {
-      case "1":
-        name = '掛';
+      case "NEW":
+        name = '登録';
       break;
-      case "2":
-        name = '現金';
+      case "EDIT":
+        name = '編集中';
       break;
-      case "7":
-        name = 'カード';
+      case "CMPL":
+        name = 'CSV出力済';
       break;
     }
     return name;
   }
+
 }

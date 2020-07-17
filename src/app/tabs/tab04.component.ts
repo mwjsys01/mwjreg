@@ -7,6 +7,8 @@ import { HeaderService } from '../srvs/header.service';
 import { formatDate } from '@angular/common';
 import * as Encoding from 'encoding-japanese';
 import * as FileSaver from 'file-saver';
+import { Apollo } from 'apollo-angular';
+import * as Query from '../graph-ql/queries';
 
 @Component({
   selector: 'app-tab04',
@@ -23,7 +25,8 @@ export class Tab04Component implements OnInit {
               // private elementRef: ElementRef,
               public hstsrv:HistoryService,
               public cussrv:CustomerService,
-              public hedsrv:HeaderService) { }
+              public hedsrv:HeaderService,
+              private apollo: Apollo) { }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;    
@@ -40,7 +43,7 @@ export class Tab04Component implements OnInit {
     const csv:string = await this.makeCsv();
     const unicode_array = this.str_to_unicode_array( csv );
     const sjis_code_array = Encoding.convert( 
-      unicode_array, // ※文字列を直接渡すのではない点に注意
+      unicode_array, // ※文字列ではない点に注意
       'SJIS',  // to
       'UNICODE' // from
     );
@@ -52,11 +55,18 @@ export class Tab04Component implements OnInit {
     const filename = formatDate(now, "yyMMdd_HHmm", this.locale) + 'mwjreg.csv'
     FileSaver.saveAs(blob, filename);
 
-    // const link: HTMLAnchorElement = this.elementRef.nativeElement.querySelector('#csv-donwload') as HTMLAnchorElement;
-    // link.href = url;
-    // let now = new Date();
-    // link.download = formatDate(now, "yyMMdd_HHmm", this.locale) + 'mwjreg.csv';
-    // link.click();
+    this.apollo.mutate<any>({
+      mutation: Query.UpdateStatus,
+      variables: { 
+        headid: this.hedsrv.headid ,
+        timest: new Date(),
+        status: 'CMPL'
+        },
+       }).subscribe(({ data }) => {
+          // console.log('got data', data);
+       },(error) => {
+          console.log('there was an error sending the query', error);
+       });
   }
 
   makeCsv():Promise<string>{
