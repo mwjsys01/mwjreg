@@ -1,20 +1,30 @@
 {
   "name": "mwjreg",
   "version": "0.0.0",
+  "engines": {
+    "node": "12.11.1"
+  },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
+    "heroku-postbuild": "ng build --configuration=production",
     "build": "ng build",
+    "dev": "ng serve",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "private": true,
+  "browser": {
+    "child_process": false
+  },
   "dependencies": {
     "@angular/animations": "~9.0.1",
     "@angular/cdk": "^9.2.4",
+    "@angular/cli": "~9.0.2",
     "@angular/common": "~9.0.1",
     "@angular/compiler": "~9.0.1",
+    "@angular/compiler-cli": "~9.0.1",
     "@angular/core": "~9.0.1",
     "@angular/flex-layout": "^10.0.0-beta.32",
     "@angular/forms": "~9.0.1",
@@ -33,12 +43,11 @@
     "graphql-tag": "^2.10.3",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "typescript": "~3.7.5",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.901.9",
-    "@angular/cli": "~9.0.2",
-    "@angular/compiler-cli": "~9.0.1",
     "@angular/language-service": "~9.0.1",
     "@types/file-saver": "^2.0.1",
     "@types/jasmine": "~3.5.0",
@@ -54,7 +63,6 @@
     "karma-jasmine-html-reporter": "^1.4.2",
     "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
-    "tslint": "~5.18.0",
-    "typescript": "~3.7.5"
+    "tslint": "~5.18.0"
   }
 }
