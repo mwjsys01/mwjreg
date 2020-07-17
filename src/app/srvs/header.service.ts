@@ -23,11 +23,12 @@ export class HeaderService {
   public header:Header=new Header();
   public headers:Header[]=[];
   public RDVAL: string="1";
-  public chSHOP: boolean=true;
-  public chCMPE: boolean;
+  public chNEW: boolean=true;
+  public chEDIT: boolean=true;
+  public chCMPL: boolean;
   public placehold: string='データ読込中';
   public headid: number;
-
+  public loaded: boolean=false;
     //コンポーネント間通信用
   subject = new Subject<string>();
   observe = this.subject.asObservable();

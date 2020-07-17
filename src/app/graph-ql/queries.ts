@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GetQuery1 = gql`
-query get_head($status: String!,$type: String) {
-  tmpshop_tblheader(where: {status: {_eq:$status}, type: {_eq:$type}}) {
+query get_head($status: [String!],$type: String!) {
+  tmpshop_tblheader(where: {status: {_in:$status}, type: {_eq:$type}}) {
     headid
     type
     name
@@ -22,9 +22,11 @@ mutation update_status($headid: Int!,$now: timestamptz!) {
 }`;
 export const GetQuery2 = gql`
 query get_stock($headid: Int!) {
-  tmpshop_tblstock(where: {headid: {_eq: $headid}}) {
+  tmpshop_tblstock(where: {headid: {_eq: $headid}}, order_by: {catid: asc}) {
+    index
     gcode
     gname
+    catid
     categ
     stock
     price1
@@ -63,12 +65,13 @@ query get_head($headid: Int!) {
       payt
       rat
       sum
+      time
       tblitems {
         cnt
         gds
         prc
         idx
-        ctg
+        cid
       }
     }
   }
@@ -82,8 +85,14 @@ mutation ins_detail($object: [tmpshop_tbldetail_insert_input!]!) {
 }`;
 
 export const UpdateStock = gql`
-mutation upd_stock($headid: Int!, $gcode: String!, $stock: Int!) {
-  update_tmpshop_tblstock(where: {gcode: {_eq: $gcode}, headid: {_eq: $headid}}, _set: {stock: $stock}) {
+mutation upd_stock($headid: Int!, $index: Int!, $stock: Int!) {
+  update_tmpshop_tblstock(where: {index: {_eq: $index}, headid: {_eq: $headid}}, _set: {stock: $stock}) {
+    affected_rows
+  }
+}`;
+export const DeleteDetail = gql`
+mutation del_detail($headid: Int!,$index: Int!,$usrid: String!) {
+  delete_tmpshop_tbldetail(where: {headid: {_eq: $headid}, index: {_eq: $index}, usrid: {_eq: $usrid}}) {
     affected_rows
   }
 }`;

@@ -12,31 +12,45 @@ export class Hist {
     Object.assign(this, init);
   }
 }
-export class Gdscnt {
-  gdspr: string;
-  count: number;
-  constructor(init?:Partial<Gdscnt>) {
-    Object.assign(this, init);
-  }
-}
-export class Sum {
-  custo: string;
-  gprcs: Gdscnt[];
-  constructor(init?:Partial<Sum>) {
-    Object.assign(this, init);
-  }  
-}
 export class Tblitems {
   prc: number;
   cnt: number;
   gds: string;
   idx: number;
-  ctg: string;
+  cid: number;
   constructor(init?:Partial<Tblitems>) {
     Object.assign(this, init);
   }  
 }
-
+export class Total {
+  rowsp: number;
+  custo: string;
+  payty: string;
+  total : number;
+  gcode: string;
+  price: number;
+  count: number;
+  constructor(init?:Partial<Total>) {
+    Object.assign(this, init);
+  }  
+}
+// export class Gdscnt {
+//   gcode: string;
+//   price: number;
+//   count: number;
+//   constructor(init?:Partial<Gdscnt>) {
+//     Object.assign(this, init);
+//   }
+// }
+// export class Total {
+//   custo: string;
+//   payty: string;
+//   total : number;
+//   gprcs: Gdscnt[];
+//   constructor(init?:Partial<Total>) {
+//     Object.assign(this, init);
+//   }  
+// }
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +59,8 @@ export class Tblitems {
 export class HistoryService {
 
   public hists:Hist[]=[];
-  public sum:Sum[]=[];
+  // public sum:Sum[]=[];
+  public total:Total[]=[];
   //コンポーネント間通信用
   subject = new Subject<string>();
   observe = this.subject.asObservable();
@@ -54,23 +69,11 @@ export class HistoryService {
 
   reset_Hists(): void{
     this.hists=[];
-    this.sum=[];
-  }
+    this.total=[];
+  } 
   addHists(phist:Hist) : void { 
     this.hists.push(phist);
-    this.calc_sum();
-  }
-  updHist(i :number,phist:Hist) {
-    this.hists[i].head = phist.head;
-    // this.hists[i].memos = phists.memos;
-    // this.hists[i].custo = phists.custo;
-    // this.hists[i].payty = phists.payty;　　
-    // this.hists[i].prsum = phist.prsum;　
-    // this.hists[i].detas = phists.detas;　
-    this.calc_sum();
-  }
-  get_Hists(): Observable<Hist[]> {
-    return of(this.hists);
+    // this.calc_total();
   }
   getIndex():number {
     if (this.hists.length == 0)　{
@@ -79,42 +82,109 @@ export class HistoryService {
       return this.hists[this.hists.length-1].index + 1;
     }
   }  
-  private calc_sum(){
-    let adSum:Sum;
-    let adCnt:Gdscnt;
-    let adCnts:Gdscnt[];
-    let i:number
-    let j:number
-    let k:number
-    let l:number
+  public calc_total(){
+    this.total=[];
+    let lctots:Total[]=[];
+    // let adCnt:Gdscnt;
+    // let adCnts:Gdscnt[];    
+    // let adSum:Sum;
+    // let i:number
+    // let j:number
+    // let k:number
+    // let l:number
 
-    this.sum=[];
-    console.log("historyservice calc_sum",this.hists);
-    for( i = 0; i < this.hists.length; i++) {
-
-      j = this.sum.findIndex(o => o.custo==this.hists[i].head.cus +'_'+ this.hists[i].head.payt)
-      if  (j == -1) {
-        adCnts = new Array();
-        for(k = 0; k < this.hists[i].deta.length; k++) {
-          adCnt = {gdspr:this.hists[i].deta[k].gds + '_' + this.hists[i].deta[k].prc[0].toString(),
-          count:this.hists[i].deta[k].cnt};
-          adCnts.push(adCnt);
-          adSum = {custo:this.hists[i].head.cus + this.hists[i].head.payt,
-            gprcs:adCnts};
-        }
-        this.sum.push(adSum);
+    // this.sum=[];
+    // console.log("historyservice calc_total",this.hists);
+    for(let i=0; i<this.hists.length; i++) {
+      let l:number = lctots.findIndex(o => o.custo==this.hists[i].head.cus && 
+                                           o.payty==this.hists[i].head.payt)      
+      if(l == -1) {
+        const lctot:Total = { rowsp:0,
+                              custo:this.hists[i].head.cus,
+                              payty:this.hists[i].head.payt,
+                              total:this.hists[i].head.sum,
+                              gcode:"",
+                              price:0,
+                              count:0}
+        lctots.push(lctot);
       } else {
-        for(k = 0; k < this.hists[i].deta.length; k++) {
-          l = this.sum[j].gprcs.findIndex(o => o.gdspr==this.hists[i].deta[k].gds +'_'+ this.hists[i].deta[k].prc[0])
-          if  (l == -1) {
-            adCnt = {gdspr:this.hists[i].deta[k].gds + '_' + this.hists[i].deta[k].prc[0].toString(),
-            count:this.hists[i].deta[k].cnt};
-            this.sum[j].gprcs.push(adCnt);
-          } else {
-            this.sum[j].gprcs[l].count += this.hists[i].deta[k].cnt;
-          }
+        lctots[l].total += this.hists[i].head.sum;
+      } 
+      for(let j = 0; j < this.hists[i].deta.length; j++) {
+        let k:number = this.total.findIndex(o => o.custo==this.hists[i].head.cus && 
+                                                 o.payty==this.hists[i].head.payt && 
+                                                 o.gcode==this.hists[i].deta[j].gds && 
+                                                 o.price==this.hists[i].deta[j].prc[0])      
+        if(k == -1) {
+          const adTotal:Total = {rowsp:0,
+                                 custo:this.hists[i].head.cus,
+                                 payty:this.hists[i].head.payt,
+                                 total:0,
+                                 gcode:this.hists[i].deta[j].gds,
+                                 price:this.hists[i].deta[j].prc[0],
+                                 count:this.hists[i].deta[j].cnt};        
+          this.total.push(adTotal);
+          let l:number = lctots.findIndex(o => o.custo==this.hists[i].head.cus && 
+                                               o.payty==this.hists[i].head.payt)
+          lctots[l].rowsp += 1;                                
+        } else {
+          this.total[k].count += this.hists[i].deta[j].cnt;
         }
       }
+
     }
+    this.total.sort((a,b)=>{
+      if(a.custo<b.custo) return -1;
+      if(a.custo>b.custo) return 1;
+      if(a.payty<b.payty) return -1;
+      if(a.payty>b.payty) return 1;
+      if(a.gcode<b.gcode) return -1;
+      if(a.gcode>b.gcode) return 1;
+      if(a.price<b.price) return -1;
+      if(a.price>b.price) return 1;
+      return 0;
+    });
+    for(let i = 0; i < this.total.length; i++) {
+      let l:number = lctots.findIndex(o => o.custo==this.total[i].custo && 
+                                           o.payty==this.total[i].payty )    
+      this.total[i].rowsp = lctots[l].rowsp;
+      lctots[l].rowsp = 0;  
+      this.total[i].total = lctots[l].total;
+    }
+    // for(let i = 0; i < this.hists.length; i++) {
+    //   let j = this.total.findIndex(o => o.custo==this.hists[i].head.cus
+    //                                  && o.payty==this.hists[i].head.payt)
+    //   if  (j == -1) {
+    //     let adCnts:Gdscnt[] = [];
+    //     let lctotal:number=0;
+    //     for(let k = 0; k < this.hists[i].deta.length; k++) {
+    //       const adCnt:Gdscnt = { gcode:this.hists[i].deta[k].gds,
+    //                              price:this.hists[i].deta[k].prc[0],
+    //                              count:this.hists[i].deta[k].cnt };
+    //       adCnts.push(adCnt);
+    //       lctotal += this.hists[i].head.sum;
+    //     }
+    //     const adTot:Total = { custo:this.hists[i].head.cus,
+    //                           payty:this.hists[i].head.payt,
+    //                           total:lctotal,
+    //                           gprcs:adCnts};
+    //     this.total.push(adTot);
+    //   } else {
+    //     for(let k = 0; k < this.hists[i].deta.length; k++) {
+    //       let l = this.total[j].gprcs.findIndex(o => o.gcode==this.hists[i].deta[k].gds
+    //                                               && o.price==this.hists[i].deta[k].prc[0])
+    //       if (l == -1) {
+    //         const adCnt:Gdscnt  = { gcode:this.hists[i].deta[k].gds,
+    //                                 price:this.hists[i].deta[k].prc[0],
+    //                                 count:this.hists[i].deta[k].cnt };
+    //         this.total[j].gprcs.push(adCnt);
+    //       } else {
+    //         this.total[j].gprcs[l].count += this.hists[i].deta[k].cnt;
+    //       }
+    //     }
+    //     this.total[j].total += this.hists[i].head.sum;
+    //   }
+    // }  
+    // console.log("hissrv calc_sum",this.sum);
   }   
 }

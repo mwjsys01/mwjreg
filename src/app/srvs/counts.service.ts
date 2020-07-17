@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { CustomerService } from './customer.service';
 
 export class Count {
-  ctg: string;
+  cid: number;
   gds: string;
   gnm: string;
   prc: number[];
@@ -32,7 +33,7 @@ export class Cnthead {
     this.zkbn = "1";
     this.neb = 0;
     this.mem="";
-    this.cus="119908";
+    this.cus="";
     this.payt="2";
   }
 }
@@ -47,7 +48,7 @@ export class CountsService {
   public subject = new Subject<string>();
   public observe = this.subject.asObservable();
 
-  constructor() { }
+  constructor(private custservice:CustomerService) { }
 
   getList() :any { return this.items; }
   setKbn(tkbn:number,zkbn:string) :void {
@@ -58,25 +59,27 @@ export class CountsService {
     }
     this.calc_sum();
   }
-  clear() {
+  reset() {
     this.items = new Array();
     this.cnthead = new Cnthead();
+    this.cnthead.cus=this.custservice.getCust()[0].code;
+    this.setKbn(this.custservice.getCust()[0].tkbn,this.custservice.getCust()[0].zkbn);
   }
-  addList(Ctg :string, Gds :string, Gnm :string, Prc :number[], Idx:number) :void {
-    let i:number = this.items.findIndex(k => k.gds==Gds)
+  addList(Cid :number, Gds :string, Gnm :string, Prc :number[], Idx:number) :void {
+    let i:number = this.items.findIndex(k => k.idx==Idx)
     // console.log("addlist" + i,this.cnthead);
     // console.log("addlist" + Gds,Prc);
     if  (i == -1) {
       Prc[0] = Prc[this.cnthead.tkbn];
-      let adGds:Count = {ctg:Ctg,gds:Gds,gnm:Gnm,prc:Prc,cnt:1,idx:Idx};
+      let adGds:Count = {cid:Cid,gds:Gds,gnm:Gnm,prc:Prc,cnt:1,idx:Idx};
       this.items.push(adGds);
     } else {
       this.items[i].cnt += 1;
     }
     this.calc_sum()
   }
-  setList(Ctg:string,Idx:number,Gds:string,Prc:number[],Cnt:number,Gnm:string) :void {
-    let adGds:Count = {ctg:Ctg,gds:Gds,gnm:Gnm,prc:Prc,cnt:Cnt,idx:Idx};
+  setList(Cid:number,Idx:number,Gds:string,Prc:number[],Cnt:number,Gnm:string) :void {
+    let adGds:Count = {cid:Cid,gds:Gds,gnm:Gnm,prc:Prc,cnt:Cnt,idx:Idx};
     this.items.push(adGds);
   }  
   delList(Gds :string) :void {

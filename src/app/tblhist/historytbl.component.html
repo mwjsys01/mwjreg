@@ -1,7 +1,13 @@
 <div class="mat-elevation-z8">
   <mat-toolbar>
-    <button mat-flat-button color="accent" >変更</button>
-    <button mat-flat-button color="warn" >削除</button>
+    <!-- <button mat-flat-button color="accent" (click)="update()">変更</button> -->
+    <button mat-flat-button color="warn" (click)="deleteHist()">チェックを削除</button>
+    <mat-paginator #paginators
+      [length]="dataSource?.data.length"
+      [pageIndex]="0"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50, 100]">
+    </mat-paginator>
   </mat-toolbar>
   <table mat-table [dataSource]="dataSource" class="full-width-table" aria-label="Elements">
     <ng-container matColumnDef="checked">
@@ -37,10 +43,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator #paginators
-    [length]="dataSource?.data.length"
-    [pageIndex]="0"
-    [pageSize]="10"
-    [pageSizeOptions]="[10, 25, 50, 100]">
-  </mat-paginator>
 </div>

@@ -35,7 +35,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-select placeholder="顧客コード" [(value)]="cntservice.cnthead.cus" (selectionChange)="setKbn($event)" required>
+        <mat-select placeholder="顧客コード" [(value)]="cntservice.cnthead.cus" (selectionChange)="setKbn($event.value)" required>
           <mat-option *ngFor="let sval of custservice.getSval()" [value]="sval.value">
             {{sval.viewValue}}
           </mat-option>
@@ -56,13 +56,13 @@
   <app-counttbl></app-counttbl>
   <mat-accordion>
     <ng-container *ngFor="let good of goodsservice.getGoods()">
-      <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel [expanded]="is_opened">
         <mat-expansion-panel-header>
           {{good.categ}}
         </mat-expansion-panel-header>
         <div fxLayoutGap="10px"> 
           <ng-container *ngFor="let ginfo of good.ginfo; let i = index">
-              <button mat-raised-button color="primary" (click)="addList(ginfo.gcode,ginfo.gname,ginfo.price,good.categ,i)" matBadge="{{ginfo.stock}}" matBadgeColor="accent">{{ginfo.gcode}}</button>
+              <button mat-raised-button color="primary" (click)="addList(ginfo.gcode,ginfo.gname,ginfo.price,good.catid,ginfo.index)" matBadge="{{ginfo.stock}}" matBadgeColor="accent">{{ginfo.gcode}}</button>
           </ng-container>
         </div>
       </mat-expansion-panel>

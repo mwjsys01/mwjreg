@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, ElementRef } from '@angular/core';
 import { HeaderService } from '../srvs/header.service';
 import { Goods, GoodsService } from '../srvs/goods.service';
 import { Count, CountsService } from '../srvs/counts.service';
@@ -13,7 +13,9 @@ import * as Query from '../graph-ql/queries';
   templateUrl: './tab02.component.html',
   styleUrls: ['./tab02.component.scss']
 })
-export class Tab02Component implements OnInit,AfterViewInit {
+export class Tab02Component implements OnInit,AfterViewChecked {
+  public tai_flg: boolean=true;
+  public is_opened:boolean=false;
   @ViewChild(CounttblComponent,{static: false})　public cntcomp:CounttblComponent;
   constructor(public headservice: HeaderService,
               public goodsservice: GoodsService,
@@ -24,26 +26,35 @@ export class Tab02Component implements OnInit,AfterViewInit {
               private apollo: Apollo) { }
 
   ngOnInit():void {
-    console.log("tab02oninit",this.elementRef.nativeElement.querySelector('mat-expansion-panel'));
+    // console.log("tab02oninit",this.elementRef.nativeElement.querySelector('mat-expansion-panel'));
+    // 大会の時だけ開く
+    // console.log('tai',this.cntservice);
+    if (this.headservice.header.type == 'CMPE' && this.tai_flg == true && this.elementRef.nativeElement.querySelector('mat-expansion-panel') != 'null') {
+      this.is_opened = true;
+      this.tai_flg = false;
+    }
   }
-  ngAfterViewInit():void {
-    console.log("tab02afterview",this.elementRef.nativeElement.querySelector('mat-expansion-panel'));
+  ngAfterViewChecked():void {
+
   }
   disCount(i :number):void {
-    this.cntservice.disCount(i,this.cntservice.cnthead.tkbn);
-    this.cntservice.subject.next();
+    this.cntservice.disCount(i,this.cntservice.cnthead.tkbn); 
+    this.cntcomp.updateData();
+    // this.cntservice.subject.next();
   }
-  setKbn(event):void {
-    this.cntservice.cnthead.tkbn = this.custservice.getTkbn(event.value);
-    this.cntservice.cnthead.zkbn = this.custservice.getZkbn(event.value);
+  setKbn(custo:string):void {
+    this.cntservice.cnthead.tkbn = this.custservice.getTkbn(custo);
+    this.cntservice.cnthead.zkbn = this.custservice.getZkbn(custo);
     this.cntservice.setKbn(this.cntservice.cnthead.tkbn,this.cntservice.cnthead.zkbn);
-    this.cntservice.subject.next();
+    this.cntcomp.updateData();
+    // this.cntservice.subject.next();
   }
-  addList(Gds :string, Gnm :string, Prc :number[], Cat :string, Idx :number):void {
-    this.cntservice.addList(Cat,Gds,Gnm,Prc,Idx);
-    this.goodsservice.decreGoods(Cat,Idx,-1);
-    this.cntservice.subject.next();
-    this.goodsservice.subject.next();
+  addList(Gds :string, Gnm :string, Prc :number[], Cid :number, Idx :number):void {
+    this.cntservice.addList(Cid,Gds,Gnm,Prc,Idx);
+    this.goodsservice.decreGoods(Cid,Idx,-1);
+    this.cntcomp.updateData();
+    // this.cntservice.subject.next();
+    // this.goodsservice.subject.next();
   }
   addHist():void {
     // 登録ボタン
@@ -56,15 +67,16 @@ export class Tab02Component implements OnInit,AfterViewInit {
       };
     // historyserviceへ追加
     this.histservice.addHists(hist);
+    this.histservice.calc_total();
     // tbldetails-tblitemsへ保存
     this.save_det(hist);
     // tblstockを更新
-    this.update_stock();
+    this.goodsservice.update_stock(this.headservice.header.headid,this.cntservice.items);
 
-    this.cntservice.clear();
-    if (this.headservice.header.type == 'CMPE') {
-      this.cntservice.cnthead.cus=this.headservice.header.code;
-    }
+    this.cntservice.reset();
+    this.cntservice.cnthead.cus=this.custservice.getCust()[0].code;
+    this.setKbn(this.cntservice.cnthead.cus);
+    // this.cntservice.subject.next();
     this.cntcomp.updateData();
   }
   calc():void {
@@ -72,12 +84,14 @@ export class Tab02Component implements OnInit,AfterViewInit {
   }
   cancel():void {
     // キャンセルボタン
-    console.log("tab02cancel",this.elementRef.nativeElement.querySelector('mat-expansion-panel'));
+    // console.log("tab02cancel",this.histservice);
+    
+    // console.log("tab02cancel",this.elementRef.nativeElement.querySelector('mat-expansion-panel'));
     const data:Count[]=this.cntservice.items;
     for (let i=0;i<data.length;++i){
-      this.goodsservice.decreGoods(data[i].ctg,data[i].idx,data[i].cnt);
+      this.goodsservice.decreGoods(data[i].cid,data[i].idx,data[i].cnt);
     }
-    this.cntservice.clear();
+    this.cntservice.reset();
     this.cntcomp.updateData();
   } 
   save_det(phist:Hist,):void {
@@ -88,7 +102,7 @@ export class Tab02Component implements OnInit,AfterViewInit {
         "cnt" :phist.deta[i].cnt,
         "gds" :phist.deta[i].gds,
         "idx" :phist.deta[i].idx,
-        "ctg" :phist.deta[i].ctg
+        "cid" :phist.deta[i].cid
       });
     }
     // console.log("save_det",tblitems);
@@ -117,24 +131,5 @@ export class Tab02Component implements OnInit,AfterViewInit {
     },(error) => {
       console.log('error InsertDetail', error);
     });
-  }      
-  update_stock():void  { 
-    // console.log("updstock",this.goodsservice.goods);
-    for (let i=0;i<this.goodsservice.goods.length;++i){
-      for (let j=0;j<this.goodsservice.goods[i].ginfo.length;++j){
-        this.apollo.mutate<any>({
-          mutation: Query.UpdateStock,
-          variables: {
-            headid: this.headservice.headid,
-            gcode : this.goodsservice.goods[i].ginfo[j].gcode,
-            stock : this.goodsservice.goods[i].ginfo[j].stock
-          },
-        }).subscribe(({ data }) => {
-          // console.log('updatestock', data);
-        },(error) => {
-          console.log('error UpdateStock', error);
-        });
-      }
-    }
-  }  
+  }       
 }

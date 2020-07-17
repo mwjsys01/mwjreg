@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -39,7 +40,6 @@ import { NumberInputDirective } from './drctvs/number-input.directive';
 import { CounttblComponent } from './tblcount/counttbl.component';
 import { HistorytblComponent } from './tblhist/historytbl.component';
 import { PayTypePipe } from './pipes/pay-type.pipe';
-
 registerLocaleData(localeJa);
 
 @NgModule({
@@ -73,6 +73,7 @@ registerLocaleData(localeJa);
     MatInputModule,
     MatListModule,
     MatMenuModule,
+    MatPaginatorModule,
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,

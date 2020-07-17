@@ -6,6 +6,10 @@
                 <mat-icon>{{link.icon}}</mat-icon>{{link.label}}
                 </a>
             </span>
+            <button mat-button><a mat-button href=https://mwj001.sharepoint.com/:b:/s/mwjapan/EegLGBivl4BCieoZzeePKI8BPL9h3Cr0yJi9782WxeOR_w?e=4ywRJC" target="_blank">
+                <mat-icon>help</mat-icon>
+                ヘルプ
+            </a></button>  
             <button mat-button [matMenuTriggerFor]="colormenu">Color変更</button>
             <mat-menu #colormenu="matMenu">
                 <button mat-menu-item (click)="setColor('indigo-pink')">indigo-pink</button>

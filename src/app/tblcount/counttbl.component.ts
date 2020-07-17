@@ -24,7 +24,7 @@ export class CounttblComponent implements OnInit {
   deleteRow(rowid: number){
     if (rowid > -1) {
       console.log('selrow',rowid);
-      this.goodsservice.decreGoods(this.cntservice.items[rowid].ctg,
+      this.goodsservice.decreGoods(this.cntservice.items[rowid].cid,
         this.cntservice.items[rowid].idx,this.cntservice.items[rowid].cnt);
       this.goodsservice.subject.next();   
       this.cntservice.items.splice(rowid,1);
@@ -33,12 +33,12 @@ export class CounttblComponent implements OnInit {
   }
   setPrev(i: number, value: number){
     this.countDif[i] = value;
-    console.log(this.countDif)
+    // console.log(this.countDif)
   }
   updateList(i: number, property: string, value: number){
     this.cntservice.items[i][property] = value;
     if(property=='cnt'){
-      this.goodsservice.decreGoods(this.cntservice.items[i].ctg,
+      this.goodsservice.decreGoods(this.cntservice.items[i].cid,
         this.cntservice.items[i].idx,-1);
       this.goodsservice.subject.next();
     } 
@@ -49,8 +49,6 @@ export class CounttblComponent implements OnInit {
     //tableのデータソース更新
     this.cntservice.calc_sum();
     this.dataSource= new MatTableDataSource<Count>(this.cntservice.items);
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
   }
 
   log(){

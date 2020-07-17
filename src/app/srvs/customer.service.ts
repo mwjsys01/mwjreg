@@ -39,7 +39,7 @@ export class CustomerService {
 　　　let i:number = this.cust.findIndex(k => k.code==pcode)
 　　　return this.cust[i].zkbn;
   }
-  getSval(){ return this.sval; }
-　getCust(){ return this.cust; }
+  getSval(): SelVal[]{ return this.sval; }
+　getCust(): Cust[]{ return this.cust; }
 
 }
