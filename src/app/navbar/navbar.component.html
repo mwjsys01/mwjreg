@@ -6,16 +6,24 @@
                 <mat-icon>{{link.icon}}</mat-icon>{{link.label}}
                 </a>
             </span>
-            <button mat-button><a mat-button href="https://mwj001.sharepoint.com/:b:/s/mwjapan/EegLGBivl4BCieoZzeePKI8BPL9h3Cr0yJi9782WxeOR_w?e=4ywRJC" target="_blank">
-                <mat-icon>help</mat-icon>
-                ヘルプ
-            </a></button>  
-            <button mat-button [matMenuTriggerFor]="colormenu">Color変更</button>
-            <mat-menu #colormenu="matMenu">
-                <button mat-menu-item (click)="setColor('indigo-pink')">indigo-pink</button>
-                <button mat-menu-item (click)="setColor('deeppurple-amber')">deeppurple-amber</button>
-                <button mat-menu-item (click)="setColor('pink-bluegrey')">pink-bluegrey</button>
-                <button mat-menu-item (click)="setColor('purple-green')">purple-green</button>
+            <button mat-button [matMenuTriggerFor]="settmenu"><mat-icon>settings</mat-icon>設定</button>
+            <mat-menu #settmenu="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="helpmenu"><mat-icon>help</mat-icon>ヘルプ</button>            
+                <mat-menu #helpmenu="matMenu">
+                    <button mat-menu-item><a mat-menu-item href="https://mwj001.sharepoint.com/:b:/s/mwjapan/EegLGBivl4BCieoZzeePKI8BPL9h3Cr0yJi9782WxeOR_w?e=4ywRJC" target="_blank">
+                        店舗用
+                    </a></button>
+                    <button mat-menu-item><a mat-menu-item href="https://mwj001.sharepoint.com/:b:/s/mwjapan/EegLGBivl4BCieoZzeePKI8BPL9h3Cr0yJi9782WxeOR_w?e=4ywRJC" target="_blank">
+                        大会用
+                    </a></button>
+                </mat-menu> 
+                <button mat-menu-item [matMenuTriggerFor]="colormenu"><mat-icon>palette</mat-icon>Color変更</button>
+                <mat-menu #colormenu="matMenu">
+                    <button mat-menu-item (click)="setColor('indigo-pink')">indigo-pink</button>
+                    <button mat-menu-item (click)="setColor('deeppurple-amber')">deeppurple-amber</button>
+                    <button mat-menu-item (click)="setColor('pink-bluegrey')">pink-bluegrey</button>
+                    <button mat-menu-item (click)="setColor('purple-green')">purple-green</button>
+                </mat-menu>
             </mat-menu>
         </div>
     </mat-toolbar-row>  

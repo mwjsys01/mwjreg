@@ -25,7 +25,7 @@ export class CounttblComponent implements OnInit {
     if (rowid > -1) {
       console.log('selrow',rowid);
       this.goodsservice.decreGoods(this.cntservice.items[rowid].cid,
-        this.cntservice.items[rowid].idx,this.cntservice.items[rowid].cnt);
+        this.cntservice.items[rowid].idx,+this.cntservice.items[rowid].cnt);
       this.goodsservice.subject.next();   
       this.cntservice.items.splice(rowid,1);
     }
@@ -39,7 +39,7 @@ export class CounttblComponent implements OnInit {
     this.cntservice.items[i][property] = value;
     if(property=='cnt'){
       this.goodsservice.decreGoods(this.cntservice.items[i].cid,
-        this.cntservice.items[i].idx,-1);
+        this.cntservice.items[i].idx,this.countDif[i]-value);
       this.goodsservice.subject.next();
     } 
     this.updateData();
