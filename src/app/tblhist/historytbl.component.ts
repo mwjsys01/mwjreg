@@ -38,7 +38,7 @@ export class HistorytblComponent implements OnInit {
         for (let i=0;i<data.length;++i){
           this.goodsservice.decreGoods(data[i].cid,data[i].idx,data[i].cnt);
         } 
-        this.goodsservice.update_stock(this.hedsrv.headid,data);
+        // this.goodsservice.update_stock(this.hedsrv.headid,data);
         this.apollo.mutate<any>({
           mutation: Query.DeleteDetail,
           variables: {

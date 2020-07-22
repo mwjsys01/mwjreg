@@ -50,7 +50,7 @@ export class Tab04Component implements OnInit {
     const uint8_array = new Uint8Array( sjis_code_array );
     // const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
     const blob = new Blob([uint8_array], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
+    // const url = window.URL.createObjectURL(blob);
     const now = new Date();
     const filename = formatDate(now, "yyMMdd_HHmm", this.locale) + 'mwjreg.csv'
     FileSaver.saveAs(blob, filename);

@@ -129,6 +129,11 @@ export class Tab01Component implements OnInit {
                     lcprc,
                     detas[i].tblitems[j].cnt,
                     ginfo.gname); 
+                    this.goodsservice.decreGoods(
+                      detas[i].tblitems[j].cid,
+                      detas[i].tblitems[j].idx,
+                      detas[i].tblitems[j].cnt * -1
+                    );
                 }
                 // console.log("calc_sum後",this.cntservice);
                 this.cntservice.calc_sum();
@@ -148,7 +153,6 @@ export class Tab01Component implements OnInit {
           });
       }  
     });
-
       
     this.router.navigate(['/tab02']);
   }

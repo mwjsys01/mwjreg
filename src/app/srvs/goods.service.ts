@@ -56,27 +56,27 @@ export class GoodsService {
     console.log("gdssrv",cid + "_" + i);
     return this.goods[i].ginfo[j];
   }
-  update_stock(headid:number,idxs:Count[]):void  { 
-    // console.log("updstock",this.goods);
+  // update_stock(headid:number,idxs:Count[]):void  { 
+  //   // console.log("updstock",this.goods);
 
-    for (let i=0;i<idxs.length;++i){
-      let j:number = this.goods.findIndex(obj => obj.catid == idxs[i].cid);
-      let k:number = this.goods[j].ginfo.findIndex(obj => obj.index == idxs[i].idx);    
+  //   for (let i=0;i<idxs.length;++i){
+  //     let j:number = this.goods.findIndex(obj => obj.catid == idxs[i].cid);
+  //     let k:number = this.goods[j].ginfo.findIndex(obj => obj.index == idxs[i].idx);    
       
-      this.apollo.mutate<any>({
-        mutation: Query.UpdateStock,
-        variables: {
-          headid: headid,
-          index : idxs[i].idx,
-          stock : this.goods[j].ginfo[k].stock
-        },
-      }).subscribe(({ data }) => {
-        // console.log('updatestock', data);
-      },(error) => {
-        console.log('error UpdateStock', error);
-      });
-    }
-  } 
+  //     this.apollo.mutate<any>({
+  //       mutation: Query.UpdateStock,
+  //       variables: {
+  //         headid: headid,
+  //         index : idxs[i].idx,
+  //         stock : this.goods[j].ginfo[k].stock
+  //       },
+  //     }).subscribe(({ data }) => {
+  //       // console.log('updatestock', data);
+  //     },(error) => {
+  //       console.log('error UpdateStock', error);
+  //     });
+  //   }
+  // } 
 
 
 

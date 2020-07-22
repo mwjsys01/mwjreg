@@ -84,12 +84,12 @@ mutation ins_detail($object: [tmpshop_tbldetail_insert_input!]!) {
   }
 }`;
 
-export const UpdateStock = gql`
-mutation upd_stock($headid: Int!, $index: Int!, $stock: Int!) {
-  update_tmpshop_tblstock(where: {index: {_eq: $index}, headid: {_eq: $headid}}, _set: {stock: $stock}) {
-    affected_rows
-  }
-}`;
+// export const UpdateStock = gql`
+// mutation upd_stock($headid: Int!, $index: Int!, $stock: Int!) {
+//   update_tmpshop_tblstock(where: {index: {_eq: $index}, headid: {_eq: $headid}}, _set: {stock: $stock}) {
+//     affected_rows
+//   }
+// }`;
 export const DeleteDetail = gql`
 mutation del_detail($headid: Int!,$index: Int!,$usrid: String!) {
   delete_tmpshop_tbldetail(where: {headid: {_eq: $headid}, index: {_eq: $index}, usrid: {_eq: $usrid}}) {

@@ -70,7 +70,8 @@ export class Tab02Component implements OnInit,AfterViewChecked {
           // console.log('got data', data);
       },(error) => {
           console.log('there was an error sending the query', error);
-      });       
+      });
+      this.cntservice.cnthead.mem += "／" + this.cntservice.items[0].gds;   
     const hist:Hist = {
         checked:false,
         index:this.histservice.getIndex(),
@@ -84,7 +85,7 @@ export class Tab02Component implements OnInit,AfterViewChecked {
     // tbldetails-tblitemsへ保存
     this.save_det(hist);
     // tblstockを更新
-    this.goodsservice.update_stock(this.headservice.header.headid,this.cntservice.items);
+    // this.goodsservice.update_stock(this.headservice.header.headid,this.cntservice.items);
 
     this.cntservice.reset();
     this.cntservice.cnthead.cus=this.custservice.getCust()[0].code;
