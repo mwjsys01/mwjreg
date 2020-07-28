@@ -16,7 +16,7 @@ import * as Query from '../graph-ql/queries';
 export class HistorytblComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @Output() action = new EventEmitter();
-  displayedColumns = ['checked','index','head.cus','head.payt','time','head.mem','head.sum'];
+  displayedColumns = ['checked','index','head.cus','head.payt','time','rusr','head.mem','head.sum'];
   dataSource = new MatTableDataSource<Hist>(this.hstsrv.hists);
 
   constructor(public hstsrv:HistoryService,
@@ -44,7 +44,7 @@ export class HistorytblComponent implements OnInit {
           variables: {
             headid: this.hedsrv.headid,
             index : hist.index,
-            usrid : "dummy"
+            usrid : this.hstsrv.hists[i].rusr
           },
         }).subscribe(({ data }) => {
           // console.log('DeleteDetail', data);

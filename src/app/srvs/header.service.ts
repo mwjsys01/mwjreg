@@ -28,6 +28,7 @@ export class HeaderService {
   public chCMPL: boolean;
   public placehold: string='データ読込中';
   public headid: number;
+  public regusr: string;
   public loaded: boolean=false;
     //コンポーネント間通信用
   subject = new Subject<string>();

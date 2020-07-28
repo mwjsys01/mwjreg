@@ -66,6 +66,8 @@ query get_head($headid: Int!) {
       rat
       sum
       time
+      usrid
+      mem
       tblitems {
         cnt
         gds

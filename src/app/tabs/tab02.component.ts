@@ -77,6 +77,7 @@ export class Tab02Component implements OnInit,AfterViewChecked {
         index:this.histservice.getIndex(),
         time:new Date(),
         head:this.cntservice.cnthead,
+        rusr:this.headservice.regusr,
         deta:this.cntservice.items
       };
     // historyserviceへ追加
@@ -84,7 +85,7 @@ export class Tab02Component implements OnInit,AfterViewChecked {
     this.histservice.calc_total();
     // tbldetails-tblitemsへ保存
     this.save_det(hist);
-    // tblstockを更新
+    // tblstockを更新はしないことに
     // this.goodsservice.update_stock(this.headservice.header.headid,this.cntservice.items);
 
     this.cntservice.reset();
@@ -136,7 +137,8 @@ export class Tab02Component implements OnInit,AfterViewChecked {
           "neb" :   phist.head.neb,
           "cus" :   phist.head.cus,
           "payt" :  phist.head.payt,
-          "usrid" : 'dummy',
+          "usrid" : phist.rusr,
+          "mem" :  phist.head.mem,
           "tblitems": { "data": tblitems }
         }
       },

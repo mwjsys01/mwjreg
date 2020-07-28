@@ -6,14 +6,15 @@
                 <mat-icon>{{link.icon}}</mat-icon>{{link.label}}
                 </a>
             </span>
-            <button mat-button [matMenuTriggerFor]="settmenu"><mat-icon>settings</mat-icon>設定</button>
+            <button mat-button [matMenuTriggerFor]="settmenu" #trigger="matMenuTrigger" >
+              <mat-icon matBadgeSize="small" matBadgeColor="accent" matBadge="!" [matBadgeHidden]="hedsrv.regusr !== null">settings</mat-icon>設定</button>
             <mat-menu #settmenu="matMenu">
                 <button mat-menu-item [matMenuTriggerFor]="helpmenu"><mat-icon>help</mat-icon>ヘルプ</button>            
                 <mat-menu #helpmenu="matMenu">
-                    <button mat-menu-item><a mat-menu-item href="https://mwj001.sharepoint.com/:b:/s/mwjapan/EegLGBivl4BCieoZzeePKI8BPL9h3Cr0yJi9782WxeOR_w?e=4ywRJC" target="_blank">
+                    <button mat-menu-item><a mat-menu-item href="https://mwj001.sharepoint.com/:b:/s/mwjapan/EegLGBivl4BCieoZzeePKI8BPL9h3Cr0yJi9782WxeOR_w?e=xWQbGh" target="_blank">
                         店舗用
                     </a></button>
-                    <button mat-menu-item><a mat-menu-item href="https://mwj001.sharepoint.com/:b:/s/mwjapan/EegLGBivl4BCieoZzeePKI8BPL9h3Cr0yJi9782WxeOR_w?e=4ywRJC" target="_blank">
+                    <button mat-menu-item><a mat-menu-item href="https://mwj001.sharepoint.com/:b:/s/mwjapan/EW3HTlux-OBDulFFxqUDsNcBFdwUx8qtFbZiWjc3gOiZYA?e=VgbcED" target="_blank">
                         大会用
                     </a></button>
                 </mat-menu> 
@@ -23,6 +24,22 @@
                     <button mat-menu-item (click)="setColor('deeppurple-amber')">deeppurple-amber</button>
                     <button mat-menu-item (click)="setColor('pink-bluegrey')">pink-bluegrey</button>
                     <button mat-menu-item (click)="setColor('purple-green')">purple-green</button>
+                </mat-menu>
+                <button mat-menu-item [matMenuTriggerFor]="usermenu"><mat-icon matBadgeSize="small" matBadgeColor="accent" matBadge="!" [matBadgeHidden]="hedsrv.regusr !== null">account_box</mat-icon>ユーザセット</button>
+                <mat-menu #usermenu="matMenu" class="menu-form-wrapper" [hasBackdrop]="false">
+                    <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                        <form class="menu-form">                  
+                            <mat-form-field>
+                                <input #usrEL matInput placeholder="ユーザ名" [(ngModel)]="hedsrv.regusr" name="elUsr" type="text" (blur)="setUser()">
+                            </mat-form-field>
+                            <button mat-raised-button (click)="setUser();trigger.closeMenu();">セット</button>
+                            <!-- <span>
+                                
+                                &nbsp;
+                                <button mat-raised-button (click)="trigger.closeMenu()">キャンセル</button>
+                            </span> -->
+                        </form>
+                    </div>
                 </mat-menu>
             </mat-menu>
         </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HeaderService }  from '../srvs/header.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   public routeLinks: any[];
-  constructor() {
+  constructor(public hedsrv: HeaderService) {
     this.routeLinks = [
       { label: 'データ選択', link: 'tab01', icon: 'dashboard' },
       { label: 'レジ', link: 'tab02', icon: 'shopping_cart' },
@@ -17,8 +18,9 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const color:string = localStorage.getItem('MWJPOS_COLOR');
+    const color:string = localStorage.getItem('MWJREG_COLOR');
     if ( color !== null ){this.setColor(color);}
+    this.hedsrv.regusr = localStorage.getItem('MWJREG_USER');
   }
 
   setColor(colorname:string):void {
@@ -29,6 +31,9 @@ export class NavbarComponent implements OnInit {
           link.href = 'https://unpkg.com/@angular/material/prebuilt-themes/' + colorname + '.css';
         }
       }
-    localStorage.setItem('MWJPOS_COLOR', colorname);
+    localStorage.setItem('MWJREG_COLOR', colorname);
+  }
+  setUser():void {
+    localStorage.setItem('MWJREG_USER', this.hedsrv.regusr);
   }
 }

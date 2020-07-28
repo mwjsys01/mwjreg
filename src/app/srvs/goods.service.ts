@@ -53,7 +53,7 @@ export class GoodsService {
   getGinfo(cid:number,idx:number):Ginfo{
     let i:number = this.goods.findIndex(obj => obj.catid == cid);
     let j:number = this.goods[i].ginfo.findIndex(obj => obj.index == idx);
-    console.log("gdssrv",cid + "_" + i);
+    // console.log("gdssrv",cid + "_" + i);
     return this.goods[i].ginfo[j];
   }
   // update_stock(headid:number,idxs:Count[]):void  { 

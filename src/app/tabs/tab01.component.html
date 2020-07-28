@@ -2,24 +2,30 @@
     <!-- <mat-card-subtitle>
       <mat-toolbar>
         <mat-card-actions>
-          <button mat-flat-button (click)="read_Data(hedsrv.headid)" color="accent">読込</button>
+          <button mat-flat-button (click)="test()" color="accent">テスト</button>
         </mat-card-actions>
       </mat-toolbar>
     </mat-card-subtitle> -->
     <mat-card-subtitle>
-      <mat-radio-group (change)="onChange()" [(ngModel)]="hedsrv.RDVAL" [ngModelOptions]="{standalone: true}">
-        <div fxLayout="row wrap" fxLayoutGap="20px"> 
-          <mat-radio-button value="1">店舗データ</mat-radio-button>
-          <mat-radio-button value="2">大会データ</mat-radio-button>
-        </div>
-      </mat-radio-group>
+      <fieldset>
+        <legend>データタイプ</legend>
+        <mat-radio-group (change)="onChange()" [(ngModel)]="hedsrv.RDVAL" [ngModelOptions]="{standalone: true}">
+          <div fxLayout="row wrap" fxLayoutGap="20px"> 
+            <mat-radio-button value="1">店舗データ</mat-radio-button>
+            <mat-radio-button value="2">大会データ</mat-radio-button>
+          </div>
+        </mat-radio-group>
+      </fieldset>
     </mat-card-subtitle>
     <mat-card-subtitle>
-      <div fxLayout="column"> 
-        <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chNEW">新規</mat-checkbox>
-        <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chEDIT">編集中</mat-checkbox>
-        <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chCMPL">CSV出力済</mat-checkbox>
-      </div>
+      <fieldset>
+        <legend>データステータス</legend>
+        <div fxLayout="column"> 
+          <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chNEW">新規</mat-checkbox>
+          <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chEDIT">編集中</mat-checkbox>
+          <mat-checkbox (change)="onChange()" [(ngModel)]="hedsrv.chCMPL">CSV出力済</mat-checkbox>
+        </div>
+      </fieldset>
     </mat-card-subtitle>
     <mat-card-content>
       <mat-select [placeholder]="hedsrv.placehold" [(value)]="hedsrv.headid" (selectionChange)="selected()">

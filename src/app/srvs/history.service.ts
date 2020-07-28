@@ -7,6 +7,7 @@ export class Hist {
   index: number;
   time: Date;
   head: Cnthead;
+  rusr: string;
   deta: Count[];
   constructor(init?:Partial<Hist>) {
     Object.assign(this, init);

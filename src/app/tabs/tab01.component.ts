@@ -141,6 +141,7 @@ export class Tab01Component implements OnInit {
                                     index:detas[i].index,
                                     time:detas[i].time,
                                     head:this.cntservice.cnthead,
+                                    rusr:detas[i].usrid,
                                     deta:this.cntservice.items
                   }
                 this.hisservice.addHists(hist);
@@ -215,5 +216,8 @@ export class Tab01Component implements OnInit {
           this.hedsrv.placehold = 'データ選択';
         }    
     });
+  }
+  test(){
+
   }
 }
