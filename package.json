@@ -40,6 +40,7 @@
     "encoding-japanese": "^1.0.30",
     "express": "^4.17.1",
     "file-saver": "^2.0.2",
+    "force-ssl-heroku": "^1.0.2",
     "graphql": "^15.1.0",
     "graphql-tag": "^2.10.3",
     "rxjs": "~6.5.4",

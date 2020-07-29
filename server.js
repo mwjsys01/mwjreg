@@ -1,8 +1,11 @@
 const path = require('path');
 const express = require('express');
+const forceSsl = require('force-ssl-heroku');
 // const exec = require('child_process').exec;
 // サーバをインスタンス化する 
 const app = express();
+// http ⇒ https リダイレクト
+app.use(forceSsl);
 
 // 以下の設定だけで dist/index.html も返せてはいる
 app.use(express.static(`${__dirname}/dist`));
