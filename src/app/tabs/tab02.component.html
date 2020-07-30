@@ -1,10 +1,11 @@
 <mat-card>
   <mat-card-subtitle>
-    <mat-toolbar>
+    <mat-toolbar fxLayout="row wrap" fxLayoutGap="5px">
       <mat-card-actions>
         <button mat-flat-button color="accent" (click)="addHist()">登録</button>
         <button mat-flat-button color="warn" (click)="cancel()">キャンセル</button>
       </mat-card-actions>
+      <span>　　　{{headservice.header.name}}</span>
     </mat-toolbar>
   </mat-card-subtitle>
     <form fxLayout="row wrap" fxLayoutGap="20px">
