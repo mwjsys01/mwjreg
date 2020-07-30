@@ -60,7 +60,7 @@ export class Tab04Component implements OnInit {
       variables: { 
         headid: this.hedsrv.headid ,
         timest: new Date(),
-        status: 'CMPL'
+        status: 'CSV'
         },
        }).subscribe(({ data }) => {
           // console.log('got data', data);

@@ -195,8 +195,8 @@ export class Tab01Component implements OnInit {
     if (this.hedsrv.chEDIT) {
       lcstatus.push('EDIT');
     }
-    if (this.hedsrv.chCMPL) {
-      lcstatus.push('CMPL');
+    if (this.hedsrv.chCSV) {
+      lcstatus.push('CSV');
     }
     // console.log(lcstatus,lctype);
     this.apollo.watchQuery<any>({

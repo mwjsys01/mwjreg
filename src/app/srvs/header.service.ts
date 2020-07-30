@@ -25,7 +25,7 @@ export class HeaderService {
   public RDVAL: string="1";
   public chNEW: boolean=true;
   public chEDIT: boolean=true;
-  public chCMPL: boolean;
+  public chCSV: boolean=false;
   public placehold: string='データ読込中';
   public headid: number;
   public regusr: string;
